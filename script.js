@@ -183,3 +183,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize the app when the page loads
     init();
 });
+
+// Add offline/online status indicator
+window.addEventListener('online', () => {
+    document.body.classList.remove('offline');
+});
+
+window.addEventListener('offline', () => {
+    document.body.classList.add('offline');
+});
+// Enhanced PWA error handling
+window.addEventListener('error', (e) => {
+    console.log('App error:', e.error);
+    // Could show user-friendly error message
+});
+
+window.addEventListener('unhandledrejection', (e) => {
+    console.log('Unhandled promise rejection:', e.reason);
+});
