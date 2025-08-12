@@ -1,182 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>NG App</title>
-    
-    <!-- Enhanced PWA Meta Tags -->
-    <meta name="theme-color" content="#00a884">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NG App">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="NG App">
-    <meta name="description" content="Modern messaging app with WhatsApp-like interface">
-    
-    <!-- Prevent zoom on iOS -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    
-    <!-- PWA Links -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/180/chat.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="https://img.icons8.com/fluency/152/chat.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://img.icons8.com/fluency/180/chat.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="https://img.icons8.com/fluency/167/chat.png">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/32/chat.png">
-    
-    <!-- CSS File -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>NG App</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00a884">
+  <link rel="icon" href="https://img.icons8.com/fluency/32/chat.png">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- PWA Install Prompt -->
-    <div id="installPrompt" class="install-prompt" style="display: none;">
-        <div class="install-prompt-content">
-            <div class="install-prompt-icon">📱</div>
-            <div class="install-prompt-text">
-                <h3>Install NG App</h3>
-                <p>Get the full app experience!</p>
-            </div>
-            <div class="install-prompt-buttons">
-                <button id="installButton" class="install-button">Install</button>
-                <button id="dismissButton" class="dismiss-button">Later</button>
-            </div>
-        </div>
+  <!-- Install prompt (same as before) -->
+  <div id="installPrompt" class="install-prompt" style="display: none;">
+    <div class="install-prompt-content">
+      <div class="install-prompt-icon">📱</div>
+      <div class="install-prompt-text">
+        <h3>Install NG App</h3>
+        <p>Get the full app experience!</p>
+      </div>
+      <div class="install-prompt-buttons">
+        <button id="installButton" class="install-button">Install</button>
+        <button id="dismissButton" class="dismiss-button">Later</button>
+      </div>
     </div>
+  </div>
 
-    <!-- Header -->
+  <!-- -- HOME / LIST VIEW -- -->
+  <div id="homeView">
     <div class="header">
-        <h1>NG App</h1>
-        <div class="header-icons">
-            <!-- Camera Icon -->
-            <svg class="header-icon" onclick="openCamera()" viewBox="0 0 24 24">
-                <path d="M12 15.5c1.9 0 3.5-1.6 3.5-3.5S13.9 8.5 12 8.5s-3.5 1.6-3.5 3.5 1.6 3.5 3.5 3.5zM17.5 7h-3l-1-2h-4l-1 2h-3C4.7 7 4 7.7 4 8.5v9c0 .8.7 1.5 1.5 1.5h13c.8 0 1.5-.7 1.5-1.5v-9c0-.8-.7-1.5-1.5-1.5z"/>
-            </svg>
-            
-            <!-- Search Icon -->
-            <svg class="header-icon" onclick="focusSearch()" viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-            
-            <!-- Three dots menu -->
-            <div class="dropdown">
-                <svg class="header-icon" onclick="toggleDropdown()" viewBox="0 0 24 24">
-                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-                <div class="dropdown-content" id="dropdownMenu">
-                    <div class="dropdown-item" onclick="newGroup()">New group</div>
-                    <div class="dropdown-item" onclick="newBroadcast()">New broadcast</div>
-                    <div class="dropdown-item" onclick="linkDevice()">Linked devices</div>
-                    <div class="dropdown-item" onclick="markAllRead()">Mark all read</div>
-                    <div class="dropdown-item" onclick="openSettings()">Settings</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Search Bar -->
-    <div class="search-container">
-        <input type="text" class="search-bar" id="searchInput" placeholder="Search or start new chat">
-    </div>
-
-    <!-- Navigation Tabs -->
-    <div class="nav-tabs">
-        <button class="nav-tab active" onclick="switchTab('chats')">Chats</button>
-        <button class="nav-tab unread" onclick="switchTab('unread')">Unread</button>
-        <button class="nav-tab" onclick="switchTab('favorites')">Favorites</button>
-        <button class="nav-tab" onclick="switchTab('groups')">Groups</button>
-        <button class="nav-tab" onclick="switchTab('status')">Status</button>
-        <button class="nav-tab" onclick="switchTab('calls')">Calls</button>
-    </div>
-
-    <!-- Chat List -->
-    <div class="chat-list" id="chatList">
-        <!-- Chat items will be populated by JavaScript -->
-    </div>
-
-    <!-- Floating Action Button -->
-    <button class="fab" onclick="newChat()">
-        <svg viewBox="0 0 24 24">
-            <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1h.5c.2 0 .4-.1.5-.2L14.1 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 11h-2v-2h2v2zm0-4h-2V5h2v4z"/>
+      <h1>NG App</h1>
+      <div class="header-icons">
+        <svg class="header-icon" onclick="openCamera()" viewBox="0 0 24 24">
+          <path d="M12 15.5c1.9 0 3.5-1.6 3.5-3.5S13.9 8.5 12 8.5s-3.5 1.6-3.5 3.5 1.6 3.5 3.5 3.5zM17.5 7h-3l-1-2h-4l-1 2h-3C4.7 7 4 7.7 4 8.5v9c0 .8.7 1.5 1.5 1.5h13c.8 0 1.5-.7 1.5-1.5v-9c0-.8-.7-1.5-1.5-1.5z"/>
         </svg>
-    </button>
+        <svg class="header-icon" onclick="focusSearch()" viewBox="0 0 24 24">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
 
-    <!-- Camera Overlay -->
-    <div class="camera-overlay" id="cameraOverlay">
-        <div class="camera-content">
-            <h2>Camera</h2>
-            <p>Camera functionality would be implemented here</p>
-            <div class="camera-buttons">
-                <button class="camera-btn">Take Photo</button>
-                <button class="camera-btn">Record Video</button>
-                <button class="camera-btn close-btn" onclick="closeCamera()">Close</button>
-            </div>
+        <div class="dropdown">
+          <svg class="header-icon" onclick="toggleDropdown()" viewBox="0 0 24 24">
+            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+          </svg>
+          <div class="dropdown-content" id="dropdownMenu">
+            <div class="dropdown-item" onclick="newGroup()">New group</div>
+            <div class="dropdown-item" onclick="newBroadcast()">New broadcast</div>
+            <div class="dropdown-item" onclick="linkDevice()">Linked devices</div>
+            <div class="dropdown-item" onclick="markAllRead()">Mark all read</div>
+            <div class="dropdown-item" onclick="openSettings()">Settings</div>
+          </div>
         </div>
+      </div>
     </div>
 
-    <!-- JavaScript File -->
-    <script src="script.js"></script>
-    
-    <!-- Enhanced PWA Registration Script -->
-    <script>
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch((registrationError) => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
+    <div class="search-container">
+      <input type="text" class="search-bar" id="searchInput" placeholder="Search or start new chat">
+    </div>
 
-        // Enhanced PWA Install prompt
-        let deferredPrompt;
-        const installPrompt = document.getElementById('installPrompt');
-        const installButton = document.getElementById('installButton');
-        const dismissButton = document.getElementById('dismissButton');
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('chats', event)">Chats</button>
+      <button class="nav-tab unread" onclick="switchTab('unread', event)">Unread</button>
+      <button class="nav-tab" onclick="switchTab('favorites', event)">Favorites</button>
+      <button class="nav-tab" onclick="switchTab('groups', event)">Groups</button>
+      <button class="nav-tab" onclick="switchTab('status', event)">Status</button>
+      <button class="nav-tab" onclick="switchTab('calls', event)">Calls</button>
+    </div>
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the mini-infobar from appearing on mobile
-            e.preventDefault();
-            // Save the event so it can be triggered later
-            deferredPrompt = e;
-            // Show the install prompt
-            installPrompt.style.display = 'block';
-        });
+    <div class="chat-list" id="chatList"></div>
 
-        installButton.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                // Show the install prompt
-                deferredPrompt.prompt();
-                // Wait for the user to respond to the prompt
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-                // Clear the deferredPrompt variable
-                deferredPrompt = null;
-                // Hide the install prompt
-                installPrompt.style.display = 'none';
-            }
-        });
+    <button class="fab" onclick="newChat()">
+      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1h.5c.2 0 .4-.1.5-.2L14.1 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 11h-2v-2h2v2zm0-4h-2V5h2v4z"/></svg>
+    </button>
+  </div>
 
-        dismissButton.addEventListener('click', () => {
-            installPrompt.style.display = 'none';
-        });
+  <!-- -- CHAT VIEW (hidden until openChat) -- -->
+  <div id="chatView" class="chat-view hidden">
+    <header class="chat-header-bar">
+      <button id="backBtn" class="back-btn" onclick="closeChat()">←</button>
+      <div class="chat-header-info">
+        <div class="chat-avatar small" id="chatAvatar">NG</div>
+        <div class="chat-title">
+          <div id="chatName" class="chat-name">Chat Name</div>
+          <div id="chatStatus" class="chat-status">online</div>
+        </div>
+      </div>
+      <div class="chat-header-actions">
+        <button class="icon-btn" onclick="openCamera()">📷</button>
+        <button class="icon-btn" onclick="toggleChatMenu()">⋯</button>
+      </div>
+    </header>
 
-        // Check if app is already installed
-        window.addEventListener('appinstalled', () => {
-            console.log('PWA was installed');
-            installPrompt.style.display = 'none';
-        });
+    <main id="messages" class="messages">
+      <!-- messages appended here -->
+      <div id="typingIndicator" class="typing hidden">
+        <div class="typing-dots"><span></span><span></span><span></span></div>
+      </div>
+    </main>
 
-        // Hide address bar on mobile when in standalone mode
-        if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-            document.body.classList.add('standalone');
-        }
-    </script>
+    <div class="composer-row">
+      <button class="composer-btn" id="stickerBtn" title="Stickers" onclick="toggleStickerPicker()">😄</button>
+      <div class="sticker-picker hidden" id="stickerPicker">
+        <!-- a few sample stickers (emoji / SVG) -->
+        <button class="sticker" onclick="sendSticker('😃')">😃</button>
+        <button class="sticker" onclick="sendSticker('😂')">😂</button>
+        <button class="sticker" onclick="sendSticker('😍')">😍</button>
+        <button class="sticker" onclick="sendSticker('👍')">👍</button>
+      </div>
+
+      <textarea id="msgInput" class="composer-input" placeholder="Message" rows="1" oninput="autoResize(this)" ></textarea>
+
+      <button id="sendBtn" class="send-btn" onclick="sendMessage()">✈</button>
+    </div>
+  </div>
+
+  <!-- Camera overlay (works from header and chat view) -->
+  <div class="camera-overlay" id="cameraOverlay">
+    <div class="camera-content">
+      <h2>Camera</h2>
+      <p>Camera functionality uses your device camera (permission required)</p>
+      <div class="camera-buttons">
+        <button class="camera-btn" id="takePhotoBtn">Take Photo</button>
+        <button class="camera-btn close-btn" onclick="closeCamera()">Close</button>
+      </div>
+      <video id="cameraVideo" autoplay playsinline style="display:none;"></video>
+      <canvas id="cameraCanvas" style="display:none;"></canvas>
+    </div>
+  </div>
+
+  <!-- scripts -->
+  <script src="script.js"></script>
+
+  <!-- service worker registration (relative path) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then(() => {
+          console.log('Service worker registered (./sw.js)');
+        }).catch(err => console.warn('SW register failed', err));
+      });
+    }
+  </script>
 </body>
 </html>
